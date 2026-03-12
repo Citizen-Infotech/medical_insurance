@@ -88,7 +88,7 @@ def prevalidate_claim(
                     global_warnings.append("OPD claims should ideally be submitted on the same date as the visit.")
 
     # ER/IPD Rules
-    if category in ("ER", "IPD"):
+    if category in ("ER"):#, "IPD"):
         submit_at_discharge = cat_rules.get("submit_at_discharge", True)
         if submit_at_discharge and getattr(claim, "claim_time", None) != "discharge":
             global_warnings.append(f"{category} claims must be submitted at discharge.")
