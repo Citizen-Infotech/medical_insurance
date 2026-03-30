@@ -1,8 +1,9 @@
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 from typing import List, Optional, Dict, Any,Literal
 from datetime import date
 import uuid
 from enum import Enum
+from rule_loader import get_items, get_services
 
 
 class PatientCategory(str, Enum):
@@ -26,12 +27,26 @@ class ItemType(str, Enum):
 
 
 class ClaimableItem(BaseModel):
-    type: ItemType = Field(..., description="Type of item (medicine, lab_test, surgery, etc.)")
+    type: ItemType
     item_code: str
     quantity: int 
     cost: float
     name: str
-    category:str=Field(..., description="Enter the category of the item i.e item or service")
+    category: Literal["item", "service"] = Field(...)
+
+    @model_validator(mode="after")
+    def validate_item_or_service(self):
+        if self.category == "item":
+            item = get_items(self.item_code)
+            if not item:
+                raise ValueError(f"{self.item_code} not found in items. It might be an invalid code or a service code. Please check and try again.")
+
+        elif self.category == "service":
+            service = get_services(self.item_code)
+            if not service:
+                raise ValueError(f"{self.item_code} not found in services. It might be an invalid code or an item code. Please check and try again.")
+
+        return self
 
     @field_validator("type" )
     def normalize_item_type(cls, v):
