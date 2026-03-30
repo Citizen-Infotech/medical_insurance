@@ -3,9 +3,10 @@ import httpx
 from dotenv import load_dotenv
 
 load_dotenv()
-
-IMIS_BASE_URL = "http://imislegacy.hib.gov.np/api/api_fhir"
-IMIS_LOGIN_URL = "https://imis.hib.gov.np"
+IMIS_BASE_URL  = os.getenv("IMIS_BASE_URL")
+IMIS_LOGIN_URL = os.getenv("IMIS_LOGIN_URL")
+# IMIS_BASE_URL = "http://imislegacy.hib.gov.np/api/api_fhir"
+# IMIS_LOGIN_URL = "https://imis.hib.gov.np"
 
 def get_auth_header(username: str, password: str):
     token = base64.b64encode(f"{username}:{password}".encode()).decode()

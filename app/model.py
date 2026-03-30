@@ -39,12 +39,12 @@ class ClaimableItem(BaseModel):
         if self.category == "item":
             item = get_items(self.item_code)
             if not item:
-                raise ValueError(f"{self.item_code} not found in items. It might be an invalid code or a service code. Please check and try again.")
+                raise ValueError(f"{self.item_code} not found in items. It might be an invalid code or a service code. Check and try again please.")
 
         elif self.category == "service":
             service = get_services(self.item_code)
             if not service:
-                raise ValueError(f"{self.item_code} not found in services. It might be an invalid code or an item code. Please check and try again.")
+                raise ValueError(f"{self.item_code} not found in services. It might be an invalid code or an item code. Check and try again please.")
 
         return self
 
