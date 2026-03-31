@@ -1,6 +1,7 @@
 import base64
 import httpx
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 IMIS_BASE_URL  = os.getenv("IMIS_BASE_URL")
